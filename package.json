@@ -1,0 +1,18 @@
+{
+  "name": "asteroids-2600",
+  "version": "1.0.0",
+  "description": "Atari 2600 Asteroids browser port with TypeScript",
+  "main": "dist/game.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "npx http-server . -p 8080"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "http-server": "^14.1.1"
+  },
+  "keywords": ["asteroids", "atari", "2600", "game", "typescript"],
+  "license": "MIT"
+}

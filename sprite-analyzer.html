@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sprite Analyzer - Atari 2600 Asteroids</title>
+    <style>
+        body { background: #222; color: #fff; font-family: monospace; padding: 20px; }
+        .container { display: flex; gap: 20px; }
+        .left-panel { flex: 1; }
+        .right-panel { width: 400px; }
+        .sprite-box { background: #333; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        canvas { image-rendering: pixelated; border: 1px solid #666; cursor: crosshair; }
+        pre { background: #111; padding: 10px; font-size: 11px; max-height: 400px; overflow: auto; white-space: pre; }
+        h2 { color: #6cf; margin-top: 0; }
+        h3 { color: #fc6; margin-top: 0; }
+        .controls { margin: 10px 0; padding: 10px; background: #444; border-radius: 4px; }
+        .control-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+        label { display: flex; align-items: center; gap: 5px; }
+        input[type="number"] { width: 50px; background: #222; color: #fff; border: 1px solid #666; padding: 3px; }
+        select { background: #222; color: #fff; border: 1px solid #666; padding: 5px; min-width: 200px; }
+        button { background: #6cf; color: #000; border: none; padding: 8px 15px; cursor: pointer; margin-right: 5px; }
+        button:hover { background: #8df; }
+        button.danger { background: #f66; }
+        button.danger:hover { background: #f88; }
+        .preview-box { background: #000; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .preview-canvas { image-rendering: pixelated; }
+        .info { color: #aaa; font-size: 12px; margin: 5px 0; }
+        .extracted-list { max-height: 200px; overflow-y: auto; }
+        .extracted-item { background: #444; padding: 5px 10px; margin: 2px 0; border-radius: 3px; display: flex; justify-content: space-between; align-items: center; }
+        .extracted-item button { padding: 2px 8px; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <h2>Atari 2600 Asteroids Sprite Extractor</h2>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="sprite-box">
+                <h3>Source Image</h3>
+                <div class="controls">
+                    <div class="control-row">
+                        <label>Asset:
+                            <select id="assetSelect" onchange="loadAsset()">
+                                <option value="assets/Atari 2600 - Asteroids - Playable Characters - Spaceship.png">Spaceship</option>
+                                <option value="assets/Atari 2600 - Asteroids - Miscellaneous - Asteroids.png">Asteroids</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="control-row">
+                        <label>Sprite ID:
+                            <select id="spriteSelect">
+                                <optgroup label="Ship">
+                                    <option value="Ship_0">Ship_0</option>
+                                    <option value="Ship_1">Ship_1</option>
+                                    <option value="Ship_2">Ship_2</option>
+                                    <option value="Ship_3">Ship_3</option>
+                                    <option value="Ship_4">Ship_4</option>
+                                </optgroup>
+                                <optgroup label="Ship Explosion">
+                                    <option value="ShipExplode_0">ShipExplode_0</option>
+                                    <option value="ShipExplode_1">ShipExplode_1</option>
+                                    <option value="ShipExplode_2">ShipExplode_2</option>
+                                    <option value="ShipExplode_3">ShipExplode_3</option>
+                                </optgroup>
+                                <optgroup label="Thrust">
+                                    <option value="Thrust_0">Thrust_0</option>
+                                    <option value="Thrust_1">Thrust_1</option>
+                                </optgroup>
+                                <optgroup label="Bullet">
+                                    <option value="Bullet">Bullet</option>
+                                </optgroup>
+                                <optgroup label="Asteroids">
+                                    <option value="Asteroid_Large_0">Asteroid_Large_0</option>
+                                    <option value="Asteroid_Large_1">Asteroid_Large_1</option>
+                                    <option value="Asteroid_Medium_0">Asteroid_Medium_0</option>
+                                    <option value="Asteroid_Medium_1">Asteroid_Medium_1</option>
+                                    <option value="Asteroid_Small_0">Asteroid_Small_0</option>
+                                    <option value="Asteroid_Small_1">Asteroid_Small_1</option>
+                                </optgroup>
+                                <optgroup label="Saucer">
+                                    <option value="Saucer">Saucer</option>
+                                    <option value="Saucer_Small">Saucer_Small</option>
+                                </optgroup>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="control-row">
+                        <label>Offset X: <input type="number" id="offsetX" value="0" min="0" max="500" onchange="redraw()"></label>
+                        <label>Offset Y: <input type="number" id="offsetY" value="0" min="0" max="500" onchange="redraw()"></label>
+                    </div>
+                    <div class="control-row">
+                        <label>Tile Width: <input type="number" id="tileW" value="9" min="1" max="32" onchange="redraw()"></label>
+                        <label>Tile Height: <input type="number" id="tileH" value="9" min="1" max="32" onchange="redraw()"></label>
+                        <label>Scale: <input type="number" id="pixelScale" value="2" min="1" max="8" onchange="redraw()"></label>
+                    </div>
+                    <div class="control-row">
+                        <button onclick="extractSprite()">Extract Sprite</button>
+                    </div>
+                </div>
+                <p class="info">Click and drag on canvas to move the grid. Use controls to adjust size.</p>
+                <canvas id="mainCanvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="sprite-box">
+                <h3>Preview</h3>
+                <div class="preview-box">
+                    <canvas id="previewCanvas" class="preview-canvas"></canvas>
+                </div>
+                <pre id="previewData"></pre>
+            </div>
+            
+            <div class="sprite-box">
+                <h3>Extracted Sprites</h3>
+                <div class="extracted-list" id="extractedList"></div>
+                <div class="control-row" style="margin-top: 10px;">
+                    <button onclick="copyToClipboard()">Copy JSON to Clipboard</button>
+                    <button class="danger" onclick="clearAll()">Clear All</button>
+                </div>
+            </div>
+            
+            <div class="sprite-box">
+                <h3>JSON Output</h3>
+                <pre id="jsonOutput">{}</pre>
+            </div>
+        </div>
+    </div>
+
+    <img id="sourceImg" style="display:none;">
+
+    <script>
+        // State
+        let imageData = null;
+        let imgWidth = 0;
+        let imgHeight = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let offsetXStart = 0;
+        let offsetYStart = 0;
+        const extractedSprites = {};
+        const zoom = 4;
+
+        function loadAsset() {
+            const img = document.getElementById('sourceImg');
+            const src = document.getElementById('assetSelect').value;
+            img.onload = () => {
+                imgWidth = img.naturalWidth;
+                imgHeight = img.naturalHeight;
+                
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = imgWidth;
+                tempCanvas.height = imgHeight;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.drawImage(img, 0, 0);
+                imageData = tempCtx.getImageData(0, 0, imgWidth, imgHeight).data;
+                
+                redraw();
+            };
+            img.src = src;
+        }
+
+        function getPixelColor(x, y) {
+            if (x < 0 || x >= imgWidth || y < 0 || y >= imgHeight) return { r: 0, g: 0, b: 0, a: 0 };
+            const i = (y * imgWidth + x) * 4;
+            return { r: imageData[i], g: imageData[i + 1], b: imageData[i + 2], a: imageData[i + 3] };
+        }
+
+        function isVisible(pixel) {
+            // Only pink/salmon color (#d89070 ish) should be visible, not brown background
+            // Pink has high red, medium green, lower blue
+            // Brown background has R ~70-90, similar G and B
+            if (pixel.a === 0) return false;
+            // Check if it's a pinkish color (high red, decent saturation)
+            const isPink = pixel.r > 150 && pixel.r > pixel.g && pixel.g > pixel.b;
+            return isPink;
+        }
+
+        function redraw() {
+            if (!imageData) return;
+
+            const canvas = document.getElementById('mainCanvas');
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('sourceImg');
+            
+            canvas.width = imgWidth * zoom;
+            canvas.height = imgHeight * zoom;
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const offsetX = parseInt(document.getElementById('offsetX').value) || 0;
+            const offsetY = parseInt(document.getElementById('offsetY').value) || 0;
+            const tileW = parseInt(document.getElementById('tileW').value) || 9;
+            const tileH = parseInt(document.getElementById('tileH').value) || 9;
+            const scale = parseInt(document.getElementById('pixelScale').value) || 2;
+
+            // Draw grid boundary
+            ctx.strokeStyle = '#0f0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(offsetX * zoom, offsetY * zoom, tileW * scale * zoom, tileH * scale * zoom);
+
+            // Draw sample points (1x1 pixels) for current selection
+            ctx.fillStyle = '#0f0';
+            for (let ty = 0; ty < tileH; ty++) {
+                for (let tx = 0; tx < tileW; tx++) {
+                    const sx = offsetX + tx * scale + Math.floor(scale / 2);
+                    const sy = offsetY + ty * scale + Math.floor(scale / 2);
+                    ctx.fillRect(sx * zoom - 1, sy * zoom - 1, 2, 2);
+                }
+            }
+
+            // Draw yellow dots for all extracted sprites from the same asset
+            const currentAsset = document.getElementById('assetSelect').value;
+            ctx.fillStyle = '#ff0';
+            for (const id in extractedSprites) {
+                const sprite = extractedSprites[id];
+                if (sprite.meta && sprite.meta.asset === currentAsset) {
+                    const m = sprite.meta;
+                    for (let ty = 0; ty < m.tileH; ty++) {
+                        for (let tx = 0; tx < m.tileW; tx++) {
+                            const sx = m.offsetX + tx * m.scale + Math.floor(m.scale / 2);
+                            const sy = m.offsetY + ty * m.scale + Math.floor(m.scale / 2);
+                            ctx.fillRect(sx * zoom - 1, sy * zoom - 1, 2, 2);
+                        }
+                    }
+                }
+            }
+
+            updatePreview();
+        }
+
+        function extractTile() {
+            const offsetX = parseInt(document.getElementById('offsetX').value) || 0;
+            const offsetY = parseInt(document.getElementById('offsetY').value) || 0;
+            const tileW = parseInt(document.getElementById('tileW').value) || 9;
+            const tileH = parseInt(document.getElementById('tileH').value) || 9;
+            const scale = parseInt(document.getElementById('pixelScale').value) || 2;
+
+            const grid = [];
+            for (let ty = 0; ty < tileH; ty++) {
+                const row = [];
+                for (let tx = 0; tx < tileW; tx++) {
+                    const px = offsetX + tx * scale + Math.floor(scale / 2);
+                    const py = offsetY + ty * scale + Math.floor(scale / 2);
+                    const pixel = getPixelColor(px, py);
+                    row.push(isVisible(pixel) ? 1 : 0);
+                }
+                grid.push(row);
+            }
+            return grid;
+        }
+
+        function updatePreview() {
+            const grid = extractTile();
+            const canvas = document.getElementById('previewCanvas');
+            const ctx = canvas.getContext('2d');
+            const displayScale = 8;
+            
+            const h = grid.length;
+            const w = grid[0] ? grid[0].length : 0;
+            canvas.width = w * displayScale;
+            canvas.height = h * displayScale;
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#6cf';
+            
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    if (grid[y][x]) {
+                        ctx.fillRect(x * displayScale, y * displayScale, displayScale, displayScale);
+                    }
+                }
+            }
+
+            // Show grid data
+            let dataStr = '[\n';
+            for (let y = 0; y < grid.length; y++) {
+                dataStr += '  [' + grid[y].join(',') + ']';
+                if (y < grid.length - 1) dataStr += ',';
+                dataStr += '\n';
+            }
+            dataStr += ']';
+            document.getElementById('previewData').textContent = dataStr;
+        }
+
+        function extractSprite() {
+            const spriteId = document.getElementById('spriteSelect').value;
+            const grid = extractTile();
+            const offsetX = parseInt(document.getElementById('offsetX').value) || 0;
+            const offsetY = parseInt(document.getElementById('offsetY').value) || 0;
+            const tileW = parseInt(document.getElementById('tileW').value) || 9;
+            const tileH = parseInt(document.getElementById('tileH').value) || 9;
+            const scale = parseInt(document.getElementById('pixelScale').value) || 2;
+            const asset = document.getElementById('assetSelect').value;
+            
+            extractedSprites[spriteId] = {
+                grid,
+                meta: { offsetX, offsetY, tileW, tileH, scale, asset }
+            };
+            updateExtractedList();
+            updateJsonOutput();
+            redraw(); // Redraw to show yellow dots
+        }
+
+        function updateExtractedList() {
+            const list = document.getElementById('extractedList');
+            list.innerHTML = '';
+            
+            for (const id in extractedSprites) {
+                const item = document.createElement('div');
+                item.className = 'extracted-item';
+                item.innerHTML = `
+                    <span>${id}</span>
+                    <button class="danger" onclick="removeSprite('${id}')">×</button>
+                `;
+                list.appendChild(item);
+            }
+        }
+
+        function removeSprite(id) {
+            delete extractedSprites[id];
+            updateExtractedList();
+            updateJsonOutput();
+            redraw(); // Redraw to update yellow dots
+        }
+
+        function clearAll() {
+            for (const key in extractedSprites) {
+                delete extractedSprites[key];
+            }
+            updateExtractedList();
+            updateJsonOutput();
+            redraw(); // Redraw to remove yellow dots
+        }
+
+        function getExportData() {
+            // Export grids with metadata
+            const exportObj = {};
+            for (const id in extractedSprites) {
+                const sprite = extractedSprites[id];
+                exportObj[id] = {
+                    grid: sprite.grid,
+                    offsetX: sprite.meta.offsetX,
+                    offsetY: sprite.meta.offsetY,
+                    tileW: sprite.meta.tileW,
+                    tileH: sprite.meta.tileH,
+                    scale: sprite.meta.scale,
+                    asset: sprite.meta.asset
+                };
+            }
+            return exportObj;
+        }
+
+        function updateJsonOutput() {
+            const json = JSON.stringify(getExportData(), null, 2);
+            document.getElementById('jsonOutput').textContent = json;
+        }
+
+        function copyToClipboard() {
+            const json = JSON.stringify(getExportData(), null, 2);
+            navigator.clipboard.writeText(json).then(() => {
+                alert('JSON copied to clipboard!');
+            });
+        }
+
+        // Mouse drag handling
+        const mainCanvas = document.getElementById('mainCanvas');
+        
+        mainCanvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartX = e.offsetX;
+            dragStartY = e.offsetY;
+            offsetXStart = parseInt(document.getElementById('offsetX').value) || 0;
+            offsetYStart = parseInt(document.getElementById('offsetY').value) || 0;
+        });
+
+        mainCanvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = Math.round((e.offsetX - dragStartX) / zoom);
+            const dy = Math.round((e.offsetY - dragStartY) / zoom);
+            document.getElementById('offsetX').value = Math.max(0, offsetXStart + dx);
+            document.getElementById('offsetY').value = Math.max(0, offsetYStart + dy);
+            redraw();
+        });
+
+        mainCanvas.addEventListener('mouseup', () => { isDragging = false; });
+        mainCanvas.addEventListener('mouseleave', () => { isDragging = false; });
+
+        // Keyboard arrow key handling
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            
+            let offsetX = parseInt(document.getElementById('offsetX').value) || 0;
+            let offsetY = parseInt(document.getElementById('offsetY').value) || 0;
+            
+            switch (e.key) {
+                case 'ArrowLeft':
+                    document.getElementById('offsetX').value = Math.max(0, offsetX - 1);
+                    redraw();
+                    e.preventDefault();
+                    break;
+                case 'ArrowRight':
+                    document.getElementById('offsetX').value = offsetX + 1;
+                    redraw();
+                    e.preventDefault();
+                    break;
+                case 'ArrowUp':
+                    document.getElementById('offsetY').value = Math.max(0, offsetY - 1);
+                    redraw();
+                    e.preventDefault();
+                    break;
+                case 'ArrowDown':
+                    document.getElementById('offsetY').value = offsetY + 1;
+                    redraw();
+                    e.preventDefault();
+                    break;
+            }
+        });
+
+        // Initialize
+        loadAsset();
+    </script>
+</body>
+</html>
