@@ -46,8 +46,10 @@ body {
 #gameCanvas {
     display: block;
     background: #000;
+    max-width: min(640px, calc(100vw - 40px));
     max-height: calc(100vh - 180px);
     width: auto;
+    height: auto;
     /* Pixel-perfect scaling - no smoothing */
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
