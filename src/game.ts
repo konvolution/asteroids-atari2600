@@ -178,8 +178,8 @@ export class AsteroidsGame {
     }
 
     private fitCanvasToViewport(): void {
-        const maxW = window.innerWidth - 40;
-        const maxH = window.innerHeight - 180;
+        const maxW = window.innerWidth - 90;   // arcade+bezel padding + border
+        const maxH = window.innerHeight - 200; // title + padding + controls hint
         const scale = Math.min(1, maxW / DISPLAY_WIDTH, maxH / DISPLAY_HEIGHT);
         this.canvas.style.width = `${Math.floor(DISPLAY_WIDTH * scale)}px`;
         this.canvas.style.height = `${Math.floor(DISPLAY_HEIGHT * scale)}px`;
