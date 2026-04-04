@@ -27,10 +27,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Generate PWA icons
+        run: |
+          sudo apt-get install -y librsvg2-bin
+          mkdir -p icons
+          rsvg-convert -w 192 -h 192 icons/icon.svg -o icons/icon-192.png
+          rsvg-convert -w 512 -h 512 icons/icon.svg -o icons/icon-512.png
+
       - name: Prepare deploy folder
         run: |
           mkdir _deploy
-          cp -r index.html sprite-analyzer.html css assets dist _deploy/
+          cp -r index.html sprite-analyzer.html manifest.json sw.js css assets dist icons _deploy/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
