@@ -54,6 +54,7 @@ export declare class AsteroidsGame {
     private accumulator;
     private frameCount;
     constructor();
+    private fitCanvasToViewport;
     private setupWorldCallbacks;
     private handleShipDestroyed;
     private loadHighScore;
