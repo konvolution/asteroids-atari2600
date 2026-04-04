@@ -153,7 +153,9 @@ export class AsteroidsGame {
         // Set canvas size
         this.canvas.width = DISPLAY_WIDTH;
         this.canvas.height = DISPLAY_HEIGHT;
-        
+        this.fitCanvasToViewport();
+        window.addEventListener('resize', () => this.fitCanvasToViewport());
+
         // Create offscreen buffer for pixel-perfect rendering
         this.buffer = document.createElement('canvas');
         this.buffer.width = INTERNAL_WIDTH;
@@ -173,6 +175,14 @@ export class AsteroidsGame {
         
         // Start game loop
         requestAnimationFrame((t) => this.gameLoop(t));
+    }
+
+    private fitCanvasToViewport(): void {
+        const maxW = window.innerWidth - 40;
+        const maxH = window.innerHeight - 180;
+        const scale = Math.min(1, maxW / DISPLAY_WIDTH, maxH / DISPLAY_HEIGHT);
+        this.canvas.style.width = `${Math.floor(DISPLAY_WIDTH * scale)}px`;
+        this.canvas.style.height = `${Math.floor(DISPLAY_HEIGHT * scale)}px`;
     }
 
     private setupWorldCallbacks(): void {
