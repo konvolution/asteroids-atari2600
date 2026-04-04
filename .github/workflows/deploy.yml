@@ -27,10 +27,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Prepare deploy folder
+        run: |
+          mkdir _deploy
+          cp -r index.html sprite-analyzer.html css assets dist _deploy/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: .
+          folder: _deploy
           clean: true
-          clean-exclude: |
-            .nojekyll
