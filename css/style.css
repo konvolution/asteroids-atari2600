@@ -1,0 +1,178 @@
+/* Atari 2600 Asteroids - CSS Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+.arcade-cabinet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.screen-bezel {
+    background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.8),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 4px solid #3d3d3d;
+}
+
+.crt-screen {
+    position: relative;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(108, 220, 246, 0.1);
+}
+
+#gameCanvas {
+    display: block;
+    background: #000;
+    /* Pixel-perfect scaling - no smoothing */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Scanline effect overlay */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    z-index: 10;
+}
+
+/* CRT flicker effect */
+.crt-flicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.02);
+    animation: flicker 0.15s infinite;
+    z-index: 11;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.97; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+}
+
+/* Screen curvature effect */
+.crt-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        transparent 70%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+    z-index: 12;
+}
+
+/* Screen reflection/glare */
+.crt-screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 13;
+}
+
+.controls-hint {
+    margin-top: 15px;
+    color: #6CDCF6;
+    font-size: 12px;
+    display: flex;
+    gap: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.controls-hint span {
+    padding: 5px 10px;
+    background: rgba(108, 220, 246, 0.1);
+    border: 1px solid rgba(108, 220, 246, 0.3);
+    border-radius: 3px;
+}
+
+/* Retro glow effect for the whole cabinet */
+.arcade-cabinet::before {
+    content: 'ASTEROIDS';
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    color: #6CDCF6;
+    text-shadow: 
+        0 0 10px #6CDCF6,
+        0 0 20px #6CDCF6,
+        0 0 40px #6CDCF6;
+    margin-bottom: 15px;
+    letter-spacing: 8px;
+}
+
+/* Responsive scaling */
+@media (max-width: 700px) {
+    .screen-bezel {
+        padding: 10px;
+    }
+    
+    .controls-hint {
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 10px;
+        gap: 10px;
+    }
+    
+    .arcade-cabinet::before {
+        font-size: 20px;
+        letter-spacing: 4px;
+    }
+}

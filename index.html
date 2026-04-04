@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroids - Atari 2600 Style</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="arcade-cabinet">
+        <div class="screen-bezel">
+            <div class="crt-screen">
+                <canvas id="gameCanvas"></canvas>
+                <div class="scanlines"></div>
+                <div class="crt-flicker"></div>
+            </div>
+        </div>
+        <div class="controls-hint">
+            <span>← → ROTATE</span>
+            <span>↑ THRUST</span>
+            <span>SPACE FIRE</span>
+            <span>SHIFT HYPERSPACE</span>
+        </div>
+    </div>
+
+    <!-- Game Scripts (compiled TypeScript) -->
+    <script type="module" src="dist/game.js"></script>
+</body>
+</html>
