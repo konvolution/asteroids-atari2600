@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#000"/>
+  <!-- Stars -->
+  <circle cx="60" cy="70" r="3" fill="#fff"/>
+  <circle cx="440" cy="110" r="2" fill="#fff"/>
+  <circle cx="90" cy="420" r="2" fill="#fff"/>
+  <circle cx="460" cy="390" r="3" fill="#fff"/>
+  <circle cx="360" cy="460" r="2" fill="#fff"/>
+  <circle cx="150" cy="160" r="2" fill="#fff"/>
+  <circle cx="400" cy="300" r="2" fill="#fff"/>
+  <!-- Asteroid -->
+  <polygon points="200,90 320,80 400,150 410,260 360,340 230,360 140,290 120,180"
+           fill="none" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>
+  <!-- Spaceship -->
+  <polygon points="256,390 232,440 280,440"
+           fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+  <line x1="256" y1="440" x2="256" y2="460" stroke="#fff" stroke-width="4"/>
+</svg>

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asteroids - Atari 2600 Style</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 </head>
 <body>
     <div class="arcade-cabinet">
@@ -25,5 +27,10 @@
 
     <!-- Game Scripts (compiled TypeScript) -->
     <script type="module" src="dist/game.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/asteroids-atari2600/sw.js');
+      }
+    </script>
 </body>
 </html>
