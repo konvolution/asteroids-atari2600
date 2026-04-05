@@ -52,81 +52,18 @@ html, body {
 
 .console {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100vw;
     height: 100vh;
-    background: #1a1a1a;
 }
 
-/* ── Top strip: wood grain + branding ────────────────────── */
+/* ── Side panels ──────────────────────────────────────────── */
 /*
-   On the real 2600, the wood grain wraps across the FRONT face,
-   with the Atari logo and "video computer system" text above the switches.
-*/
-
-.console-top {
-    flex-shrink: 0;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    /* Faux wood grain matching the 2600's walnut veneer */
-    background:
-        repeating-linear-gradient(
-            100deg,
-            rgba(0,0,0,0.18) 0px,
-            rgba(0,0,0,0.18) 1px,
-            transparent 1px,
-            transparent 5px
-        ),
-        linear-gradient(
-            90deg,
-            #5c3010 0%,
-            #7a4520 8%,
-            #6b3a18 16%,
-            #8a5028 24%,
-            #6b3a18 32%,
-            #7a4520 40%,
-            #5c3010 48%,
-            #7a4520 56%,
-            #6b3a18 64%,
-            #8a5028 72%,
-            #6b3a18 80%,
-            #7a4520 92%,
-            #5c3010 100%
-        );
-    border-bottom: 2px solid #3a1c08;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-}
-
-.atari-logo {
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 5px;
-    color: #e8c87a;
-    text-shadow: 0 0 6px rgba(232,200,122,0.5);
-}
-
-.model-name {
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: rgba(232,200,122,0.6);
-}
-
-/* ── Main row: left controls | screen | right controls ───── */
-
-.console-main {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    min-height: 0;
-}
-
-/* ── Control panels (left & right) ───────────────────────── */
-/*
-   The plastic side areas of the 2600 have characteristic
-   horizontal ridges/ribs moulded into the plastic.
+   Atari 2600 design language:
+   - Dark charcoal plastic body
+   - Faux wood grain veneer across the front face (top area of panel)
+   - Characteristic horizontal ridges moulded into the lower plastic area
+   - Iconic orange plastic trim accent separating the screen from the controls
 */
 
 .console-side {
@@ -134,30 +71,132 @@ html, body {
     width: 110px;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+}
+
+/* Orange trim accent — the signature 2600 border strip */
+.console-left {
+    border-right: 3px solid #d45f00;
+    background: #1a1a1a;
+}
+
+.console-right {
+    border-left: 3px solid #d45f00;
+    background: #1a1a1a;
+}
+
+/* ── Side header: wood grain + branding ───────────────────── */
+
+.side-header {
+    flex-shrink: 0;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Faux walnut wood grain — the 2600's iconic front veneer */
+    background:
+        repeating-linear-gradient(
+            100deg,
+            rgba(0,0,0,0.2) 0px,
+            rgba(0,0,0,0.2) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        linear-gradient(
+            180deg,
+            #5c3010 0%,
+            #7a4520 20%,
+            #6b3a18 40%,
+            #8a5028 60%,
+            #6b3a18 80%,
+            #5c3010 100%
+        );
+    border-bottom: 2px solid #3a1c08;
+}
+
+.atari-logo {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #e8c87a;
+    text-shadow: 0 0 4px rgba(232,200,122,0.4);
+}
+
+.model-name {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #e8c87a;
+    text-shadow: 0 0 4px rgba(232,200,122,0.4);
+}
+
+/* ── Side controls area: horizontal ridged plastic ────────── */
+
+.side-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 14px;
-    padding: 12px 8px;
+    padding: 10px 8px;
 
-    /* Horizontal ridges: the 2600's moulded plastic ribs */
+    /* Horizontal ridges — the 2600's moulded plastic ribs */
     background:
         repeating-linear-gradient(
             180deg,
             rgba(255,255,255,0.04) 0px,
             rgba(255,255,255,0.04) 1px,
-            rgba(0,0,0,0.12) 1px,
-            rgba(0,0,0,0.12) 3px,
+            rgba(0,0,0,0.14) 1px,
+            rgba(0,0,0,0.14) 3px,
             transparent 3px,
             transparent 10px
         ),
-        linear-gradient(180deg, #232323 0%, #1a1a1a 50%, #232323 100%);
-
-    border-right: 1px solid #2e2e2e;
+        linear-gradient(180deg, #222 0%, #1a1a1a 50%, #222 100%);
 }
 
-.console-side.console-right {
-    border-right: none;
-    border-left: 1px solid #2e2e2e;
+/* ── Side footer: switches / start ───────────────────────── */
+
+.side-footer {
+    flex-shrink: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    border-top: 1px solid #2a2a2a;
+}
+
+.switch-row {
+    display: flex;
+    gap: 6px;
+}
+
+.switch-nub {
+    width: 16px;
+    height: 6px;
+    background: linear-gradient(180deg, #555, #333);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.start-btn {
+    padding: 4px 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 8px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #6CDCF6;
+    background: rgba(108,220,246,0.06);
+    border: 1px solid rgba(108,220,246,0.25);
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    touch-action: none;
+}
+
+.start-btn:active {
+    background: rgba(108,220,246,0.18);
 }
 
 /* ── Buttons ──────────────────────────────────────────────── */
@@ -171,9 +210,9 @@ html, body {
     font-family: 'Courier New', monospace;
     font-weight: bold;
     outline: none;
-    transition: transform 0.05s, filter 0.05s;
-    -webkit-tap-highlight-color: transparent;
     touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.05s, filter 0.05s;
 }
 
 .rotate-btn {
@@ -188,8 +227,8 @@ html, body {
 }
 
 .thrust-btn {
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
     font-size: 20px;
     border-radius: 50%;
     background: linear-gradient(145deg, #484848, #282828);
@@ -199,8 +238,8 @@ html, body {
 }
 
 .fire-btn {
-    width: 66px;
-    height: 66px;
+    width: 64px;
+    height: 64px;
     font-size: 12px;
     letter-spacing: 1px;
     border-radius: 50%;
@@ -212,8 +251,8 @@ html, body {
 }
 
 .hyper-btn {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     font-size: 9px;
     letter-spacing: 1px;
     border-radius: 50%;
@@ -227,134 +266,42 @@ html, body {
 .ctrl-btn:active {
     transform: scale(0.90);
     filter: brightness(0.75);
-    box-shadow: 1px 1px 2px #0a0a0a;
 }
 
-/* ── Screen centre ────────────────────────────────────────── */
+/* ── Game canvas: full viewport height ───────────────────── */
 
 .console-centre {
     flex: 1;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 0;
-    padding: 6px;
-    background: #161616;
-}
-
-.screen-bezel {
-    background: linear-gradient(145deg, #2a2a2a, #151515);
-    padding: 8px;
-    border-radius: 8px;
-    box-shadow:
-        0 0 16px rgba(0,0,0,0.9),
-        inset 0 0 12px rgba(0,0,0,0.6);
-    border: 2px solid #333;
-}
-
-.crt-screen {
-    position: relative;
     background: #000;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow:
-        inset 0 0 20px rgba(0,0,0,0.8),
-        0 0 10px rgba(108,220,246,0.08);
+    min-width: 0;
 }
 
 #gameCanvas {
     display: block;
+    height: 100vh;
     aspect-ratio: 640 / 840;
-    max-height: calc(100vh - 60px); /* 28px top strip + 32px padding */
-    max-width: calc(100vw - 240px); /* 110px × 2 sides + padding */
     width: auto;
-    height: auto;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
 
+/* Scanline overlay on the gameplay area */
 .scanlines {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background: repeating-linear-gradient(
         0deg,
-        rgba(0,0,0,0.15),
-        rgba(0,0,0,0.15) 1px,
+        rgba(0,0,0,0.12),
+        rgba(0,0,0,0.12) 1px,
         transparent 1px,
         transparent 3px
     );
     z-index: 10;
-}
-
-.crt-flicker {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: rgba(255,255,255,0.015);
-    animation: flicker 0.15s infinite;
-    z-index: 11;
-}
-
-@keyframes flicker {
-    0%   { opacity: 0.97; }
-    50%  { opacity: 1;    }
-    100% { opacity: 0.98; }
-}
-
-.crt-screen::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 0%,
-        transparent 65%,
-        rgba(0,0,0,0.5) 100%
-    );
-    pointer-events: none;
-    z-index: 12;
-}
-
-/* ── Bottom strip: switches aesthetic + start ─────────────── */
-
-.console-bottom {
-    flex-shrink: 0;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 0 20px;
-    background: #1a1a1a;
-    border-top: 1px solid #2a2a2a;
-}
-
-/* Decorative switch nubs (non-interactive, aesthetic only) */
-.switch-nub {
-    width: 18px;
-    height: 6px;
-    background: linear-gradient(180deg, #555, #333);
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.8);
-}
-
-.start-btn {
-    padding: 3px 14px;
-    font-family: 'Courier New', monospace;
-    font-size: 9px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    color: #6CDCF6;
-    background: rgba(108,220,246,0.06);
-    border: 1px solid rgba(108,220,246,0.25);
-    border-radius: 3px;
-    cursor: pointer;
-    outline: none;
-}
-
-.start-btn:active {
-    background: rgba(108,220,246,0.18);
 }

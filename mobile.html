@@ -19,51 +19,46 @@
         <p>Rotate your device to play</p>
     </div>
 
-    <!-- Atari 2600 console -->
+    <!-- Atari 2600 console — landscape layout -->
     <div class="console">
 
-        <!-- Wood grain top strip with branding -->
-        <div class="console-top">
-            <span class="atari-logo">ATARI</span>
-            <span class="model-name">VIDEO COMPUTER SYSTEM</span>
-        </div>
-
-        <!-- Main row: left controls | screen | right controls -->
-        <div class="console-main">
-
-            <!-- Left: rotate controls on ridged plastic -->
-            <div class="console-side console-left">
+        <!-- Left panel: wood grain top + rotate controls + switch nubs -->
+        <div class="console-side console-left">
+            <div class="side-header">
+                <span class="atari-logo">ATARI</span>
+            </div>
+            <div class="side-controls">
                 <button id="btn-left"  class="ctrl-btn rotate-btn" aria-label="Rotate left">&#9664;</button>
                 <button id="btn-right" class="ctrl-btn rotate-btn" aria-label="Rotate right">&#9654;</button>
             </div>
-
-            <!-- Centre: CRT screen -->
-            <div class="console-centre">
-                <div class="screen-bezel">
-                    <div class="crt-screen">
-                        <canvas id="gameCanvas"></canvas>
-                        <div class="scanlines"></div>
-                        <div class="crt-flicker"></div>
-                    </div>
+            <div class="side-footer">
+                <div class="switch-row">
+                    <div class="switch-nub"></div>
+                    <div class="switch-nub"></div>
+                    <div class="switch-nub"></div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right: action controls on ridged plastic -->
-            <div class="console-side console-right">
+        <!-- Centre: raw gameplay canvas, full height -->
+        <div class="console-centre">
+            <canvas id="gameCanvas"></canvas>
+            <div class="scanlines"></div>
+        </div>
+
+        <!-- Right panel: action controls + start -->
+        <div class="console-side console-right">
+            <div class="side-header">
+                <span class="model-name">2600</span>
+            </div>
+            <div class="side-controls">
                 <button id="btn-thrust"     class="ctrl-btn thrust-btn"  aria-label="Thrust">&#9650;</button>
                 <button id="btn-fire"       class="ctrl-btn fire-btn"    aria-label="Fire">FIRE</button>
                 <button id="btn-hyperspace" class="ctrl-btn hyper-btn"   aria-label="Hyperspace">WARP</button>
             </div>
-
-        </div>
-
-        <!-- Bottom strip: decorative switches + start -->
-        <div class="console-bottom">
-            <div class="switch-nub"></div>
-            <div class="switch-nub"></div>
-            <button id="btn-start" class="start-btn" aria-label="Start">START / SELECT</button>
-            <div class="switch-nub"></div>
-            <div class="switch-nub"></div>
+            <div class="side-footer">
+                <button id="btn-start" class="start-btn" aria-label="Start">START</button>
+            </div>
         </div>
 
     </div>
