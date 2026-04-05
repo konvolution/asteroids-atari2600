@@ -97,13 +97,8 @@ export class InputHandler {
 
     setAction(action: InputAction, pressed: boolean): void {
         this.keys[action] = pressed;
-        if (action === 'fire') {
-            if (pressed) this.firePressed = true;
-            else this.firePressed = false;
-        }
-        if (action === 'hyperspace' && pressed) {
-            this.hyperspacePressed = true;
-        }
+        if (action === 'fire' && pressed) this.firePressed = true;
+        if (action === 'hyperspace' && pressed) this.hyperspacePressed = true;
     }
 
     triggerStart(): void {
@@ -111,7 +106,7 @@ export class InputHandler {
     }
 
     consumeFire(): boolean {
-        if (this.firePressed && this.keys.fire) {
+        if (this.firePressed) {
             this.firePressed = false;
             return true;
         }

@@ -12,7 +12,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #111;
+    background: #0a0a0a;
     font-family: 'Courier New', monospace;
 }
 
@@ -31,11 +31,12 @@ html, body {
     gap: 16px;
     font-size: 18px;
     text-align: center;
+    padding: 20px;
 }
 
 #rotate-prompt .rotate-icon {
-    font-size: 56px;
-    animation: spin 2s linear infinite;
+    font-size: 64px;
+    animation: spin 3s linear infinite;
 }
 
 @keyframes spin {
@@ -47,75 +48,119 @@ html, body {
     #rotate-prompt { display: flex; }
 }
 
-/* ── Console body ─────────────────────────────────────────── */
+/* ── Console outer body ───────────────────────────────────── */
 
 .console {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 60%, #2a2a2a 100%);
-    border-top: 3px solid #3a3a3a;
-    border-bottom: 3px solid #111;
+    background: #1a1a1a;
 }
 
-/* ── Wood panels ──────────────────────────────────────────── */
+/* ── Top strip: wood grain + branding ────────────────────── */
+/*
+   On the real 2600, the wood grain wraps across the FRONT face,
+   with the Atari logo and "video computer system" text above the switches.
+*/
 
-.wood-panel {
-    width: 28px;
-    height: 100%;
+.console-top {
     flex-shrink: 0;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    /* Faux wood grain matching the 2600's walnut veneer */
     background:
         repeating-linear-gradient(
-            170deg,
-            rgba(255,255,255,0.03) 0px,
-            rgba(255,255,255,0.03) 1px,
+            100deg,
+            rgba(0,0,0,0.18) 0px,
+            rgba(0,0,0,0.18) 1px,
             transparent 1px,
-            transparent 6px
+            transparent 5px
         ),
         linear-gradient(
-            180deg,
-            #6b3a1f 0%,
-            #8b4e28 15%,
-            #7a4220 30%,
-            #9b5a30 45%,
-            #7a4220 60%,
-            #8b4e28 75%,
-            #6b3a1f 100%
+            90deg,
+            #5c3010 0%,
+            #7a4520 8%,
+            #6b3a18 16%,
+            #8a5028 24%,
+            #6b3a18 32%,
+            #7a4520 40%,
+            #5c3010 48%,
+            #7a4520 56%,
+            #6b3a18 64%,
+            #8a5028 72%,
+            #6b3a18 80%,
+            #7a4520 92%,
+            #5c3010 100%
         );
-    border-left: 2px solid #4a2810;
-    border-right: 2px solid #4a2810;
+    border-bottom: 2px solid #3a1c08;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
 }
 
-/* ── Side panels (controls + wood) ───────────────────────── */
+.atari-logo {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #e8c87a;
+    text-shadow: 0 0 6px rgba(232,200,122,0.5);
+}
 
-.console-side {
+.model-name {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(232,200,122,0.6);
+}
+
+/* ── Main row: left controls | screen | right controls ───── */
+
+.console-main {
+    flex: 1;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    min-height: 0;
+}
+
+/* ── Control panels (left & right) ───────────────────────── */
+/*
+   The plastic side areas of the 2600 have characteristic
+   horizontal ridges/ribs moulded into the plastic.
+*/
+
+.console-side {
     flex-shrink: 0;
-    padding: 0;
-}
-
-.console-left {
-    flex-direction: row;
-}
-
-.console-right {
-    flex-direction: row;
-}
-
-.side-controls {
+    width: 110px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 14px;
-    padding: 0 12px;
-    height: 100%;
+    padding: 12px 8px;
+
+    /* Horizontal ridges: the 2600's moulded plastic ribs */
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(255,255,255,0.04) 0px,
+            rgba(255,255,255,0.04) 1px,
+            rgba(0,0,0,0.12) 1px,
+            rgba(0,0,0,0.12) 3px,
+            transparent 3px,
+            transparent 10px
+        ),
+        linear-gradient(180deg, #232323 0%, #1a1a1a 50%, #232323 100%);
+
+    border-right: 1px solid #2e2e2e;
 }
 
-/* ── Control buttons ──────────────────────────────────────── */
+.console-side.console-right {
+    border-right: none;
+    border-left: 1px solid #2e2e2e;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
 
 .ctrl-btn {
     display: flex;
@@ -126,134 +171,102 @@ html, body {
     font-family: 'Courier New', monospace;
     font-weight: bold;
     outline: none;
-    transition: transform 0.05s, box-shadow 0.05s, background 0.05s;
+    transition: transform 0.05s, filter 0.05s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
 }
 
-/* Rotate buttons — medium square */
 .rotate-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #444, #2a2a2a);
-    color: #ccc;
-    box-shadow: 3px 3px 6px #111, -1px -1px 3px #555;
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #3a3a3a, #222);
+    color: #bbb;
+    box-shadow: 2px 2px 5px #0a0a0a, -1px -1px 2px #444;
+    border: 1px solid #444;
 }
 
-/* Thrust — larger */
 .thrust-btn {
-    width: 64px;
-    height: 64px;
-    font-size: 22px;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #555, #333);
-    color: #ddd;
-    box-shadow: 3px 3px 6px #111, -1px -1px 3px #666;
-}
-
-/* Fire — prominent red */
-.fire-btn {
-    width: 72px;
-    height: 72px;
-    font-size: 13px;
-    letter-spacing: 1px;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #c0392b, #7b1c14);
-    color: #fff;
-    box-shadow: 3px 3px 8px #111, -1px -1px 3px #e74c3c;
-    text-shadow: 0 0 6px rgba(255,100,100,0.6);
-}
-
-/* Hyperspace — smaller, orange */
-.hyper-btn {
     width: 58px;
     height: 58px;
-    font-size: 10px;
+    font-size: 20px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #484848, #282828);
+    color: #ccc;
+    box-shadow: 2px 2px 5px #0a0a0a, -1px -1px 2px #555;
+    border: 1px solid #444;
+}
+
+.fire-btn {
+    width: 66px;
+    height: 66px;
+    font-size: 12px;
     letter-spacing: 1px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #d35400, #8a3500);
+    background: radial-gradient(circle at 38% 38%, #e05040, #8b1c0f);
     color: #fff;
-    box-shadow: 3px 3px 6px #111, -1px -1px 3px #e67e22;
+    box-shadow: 2px 2px 6px #0a0a0a, 0 0 10px rgba(200,60,40,0.3);
+    border: 1px solid #a03020;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
-/* Press states */
-.ctrl-btn:active,
-.ctrl-btn.pressed {
-    transform: scale(0.92);
-    box-shadow: 1px 1px 3px #111;
-    filter: brightness(0.85);
+.hyper-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, #c07020, #7a4010);
+    color: #fff;
+    box-shadow: 2px 2px 5px #0a0a0a, 0 0 8px rgba(180,100,20,0.3);
+    border: 1px solid #8a5010;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
-/* ── Centre section ───────────────────────────────────────── */
+.ctrl-btn:active {
+    transform: scale(0.90);
+    filter: brightness(0.75);
+    box-shadow: 1px 1px 2px #0a0a0a;
+}
+
+/* ── Screen centre ────────────────────────────────────────── */
 
 .console-centre {
     flex: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 0;
-    min-width: 0;
-}
-
-/* Top strip — Atari branding */
-.console-top-strip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 8px;
-}
-
-.atari-logo {
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 4px;
-    color: #6CDCF6;
-    text-shadow: 0 0 8px #6CDCF6;
-}
-
-.model-name {
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #888;
-}
-
-/* Screen frame */
-.screen-frame {
-    flex: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: 4px 8px;
+    min-width: 0;
+    padding: 6px;
+    background: #161616;
 }
 
 .screen-bezel {
-    background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-    padding: 10px;
-    border-radius: 10px;
+    background: linear-gradient(145deg, #2a2a2a, #151515);
+    padding: 8px;
+    border-radius: 8px;
     box-shadow:
-        0 0 20px rgba(0,0,0,0.8),
-        inset 0 0 15px rgba(0,0,0,0.5);
-    border: 3px solid #3d3d3d;
+        0 0 16px rgba(0,0,0,0.9),
+        inset 0 0 12px rgba(0,0,0,0.6);
+    border: 2px solid #333;
 }
 
 .crt-screen {
     position: relative;
     background: #000;
-    border-radius: 6px;
+    border-radius: 4px;
     overflow: hidden;
     box-shadow:
-        inset 0 0 30px rgba(0,0,0,0.8),
-        0 0 15px rgba(108,220,246,0.1);
+        inset 0 0 20px rgba(0,0,0,0.8),
+        0 0 10px rgba(108,220,246,0.08);
 }
 
 #gameCanvas {
     display: block;
-    /* Scale to fit available space while preserving aspect ratio */
-    max-width: 100%;
-    max-height: calc(100vh - 80px);
     aspect-ratio: 640 / 840;
+    max-height: calc(100vh - 60px); /* 28px top strip + 32px padding */
+    max-width: calc(100vw - 240px); /* 110px × 2 sides + padding */
     width: auto;
     height: auto;
     image-rendering: -moz-crisp-edges;
@@ -262,7 +275,6 @@ html, body {
     image-rendering: crisp-edges;
 }
 
-/* Scanlines */
 .scanlines {
     position: absolute;
     inset: 0;
@@ -277,12 +289,11 @@ html, body {
     z-index: 10;
 }
 
-/* CRT flicker */
 .crt-flicker {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: rgba(255,255,255,0.02);
+    background: rgba(255,255,255,0.015);
     animation: flicker 0.15s infinite;
     z-index: 11;
 }
@@ -293,7 +304,6 @@ html, body {
     100% { opacity: 0.98; }
 }
 
-/* CRT vignette */
 .crt-screen::before {
     content: '';
     position: absolute;
@@ -301,33 +311,50 @@ html, body {
     background: radial-gradient(
         ellipse at center,
         transparent 0%,
-        transparent 70%,
-        rgba(0,0,0,0.4) 100%
+        transparent 65%,
+        rgba(0,0,0,0.5) 100%
     );
     pointer-events: none;
     z-index: 12;
 }
 
-/* Bottom strip — start button */
-.console-bottom-strip {
-    padding: 4px 8px;
+/* ── Bottom strip: switches aesthetic + start ─────────────── */
+
+.console-bottom {
+    flex-shrink: 0;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 20px;
+    background: #1a1a1a;
+    border-top: 1px solid #2a2a2a;
+}
+
+/* Decorative switch nubs (non-interactive, aesthetic only) */
+.switch-nub {
+    width: 18px;
+    height: 6px;
+    background: linear-gradient(180deg, #555, #333);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
 .start-btn {
-    padding: 6px 20px;
+    padding: 3px 14px;
     font-family: 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: bold;
     letter-spacing: 3px;
     color: #6CDCF6;
-    background: rgba(108,220,246,0.08);
-    border: 1px solid rgba(108,220,246,0.3);
-    border-radius: 4px;
+    background: rgba(108,220,246,0.06);
+    border: 1px solid rgba(108,220,246,0.25);
+    border-radius: 3px;
     cursor: pointer;
     outline: none;
-    transition: background 0.1s;
 }
 
 .start-btn:active {
-    background: rgba(108,220,246,0.2);
+    background: rgba(108,220,246,0.18);
 }

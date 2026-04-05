@@ -16,7 +16,7 @@ const BUTTONS: ButtonConfig[] = [
     { id: 'btn-left',       action: 'left' },
     { id: 'btn-right',      action: 'right' },
     { id: 'btn-thrust',     action: 'up' },
-    { id: 'btn-fire',       action: 'fire' },
+    { id: 'btn-fire',       action: 'fire', onPress: () => input.triggerStart() },
     { id: 'btn-hyperspace', action: 'hyperspace' },
     { id: 'btn-start',      onPress: () => input.triggerStart() },
 ];
