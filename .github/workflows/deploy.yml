@@ -37,7 +37,7 @@ jobs:
       - name: Prepare deploy folder
         run: |
           mkdir _deploy
-          cp -r index.html sprite-analyzer.html manifest.json sw.js css assets dist icons _deploy/
+          cp -r index.html mobile.html sprite-analyzer.html manifest.json manifest-mobile.json sw.js css assets dist icons _deploy/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

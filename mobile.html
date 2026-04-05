@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Asteroids - Atari 2600</title>
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="manifest" href="manifest-mobile.json">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+    <!-- Portrait mode overlay -->
+    <div id="rotate-prompt">
+        <div class="rotate-icon">⟳</div>
+        <p>Rotate your device to play</p>
+    </div>
+
+    <!-- Atari 2600 console -->
+    <div class="console">
+
+        <!-- Left side: wood panel + rotate controls -->
+        <div class="console-side console-left">
+            <div class="wood-panel"></div>
+            <div class="side-controls">
+                <button id="btn-left"  class="ctrl-btn rotate-btn" aria-label="Rotate left">&#9664;</button>
+                <button id="btn-right" class="ctrl-btn rotate-btn" aria-label="Rotate right">&#9654;</button>
+            </div>
+        </div>
+
+        <!-- Centre: screen + console body -->
+        <div class="console-centre">
+            <div class="console-top-strip">
+                <span class="atari-logo">ATARI</span>
+                <span class="model-name">2600</span>
+            </div>
+            <div class="screen-frame">
+                <div class="screen-bezel">
+                    <div class="crt-screen">
+                        <canvas id="gameCanvas"></canvas>
+                        <div class="scanlines"></div>
+                        <div class="crt-flicker"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="console-bottom-strip">
+                <button id="btn-start" class="start-btn" aria-label="Start / Fire">START</button>
+            </div>
+        </div>
+
+        <!-- Right side: action controls + wood panel -->
+        <div class="console-side console-right">
+            <div class="side-controls">
+                <button id="btn-thrust"     class="ctrl-btn thrust-btn"     aria-label="Thrust">&#9650;</button>
+                <button id="btn-fire"       class="ctrl-btn fire-btn"       aria-label="Fire">FIRE</button>
+                <button id="btn-hyperspace" class="ctrl-btn hyper-btn"      aria-label="Hyperspace">WARP</button>
+            </div>
+            <div class="wood-panel"></div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initMobileInput } from './dist/mobile-input.js';
+        initMobileInput();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/asteroids-atari2600/sw.js');
+        }
+    </script>
+    <script type="module" src="dist/game.js"></script>
+</body>
+</html>
