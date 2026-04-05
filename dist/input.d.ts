@@ -15,6 +15,8 @@ export declare class InputHandler {
     private handleKeyDown;
     private handleKeyUp;
     isPressed(action: InputAction): boolean;
+    setAction(action: InputAction, pressed: boolean): void;
+    triggerStart(): void;
     consumeFire(): boolean;
     consumeHyperspace(): boolean;
     consumeStart(): boolean;
